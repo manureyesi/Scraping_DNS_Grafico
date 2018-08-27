@@ -5,12 +5,15 @@
  */
 package GRAFICO;
 
-//Importar Log
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import javafx.print.PaperSource;
+
+
+
+//Importar Log
 import org.apache.log4j.Logger;
 
 /**
@@ -19,13 +22,20 @@ import org.apache.log4j.Logger;
  */
 public class Grafico_Principal extends javax.swing.JFrame {
     
-     private static Logger log = Logger.getLogger(Grafico_Principal.class);
+    private static Logger log = Logger.getLogger(Grafico_Principal.class);
+    
+    //Credenciales
+    public static UTILES.Credenciales creden;
     
     /**
      * Creates new form Grafico_Principal
      */
     public Grafico_Principal() {
         initComponents();
+        
+        //Nombre Ventana
+        this.setTitle("Actualizador DNS");
+        
     }
 
     /**
@@ -43,13 +53,21 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         Texto_IP.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Texto_IP.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jScrollPane1.setViewportView(Texto_IP);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/vps-espana-dinahosting.jpg"))); // NOI18N
-        jLabel1.setText("jLabel1");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/logo_dinahosting.jpg"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,6 +92,60 @@ public class Grafico_Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowActivated
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+        log.info("Iniciando Ventana");
+        log.info("Comprobando archivo de configuración");
+
+        UTILES.Credenciales creden = null;
+
+        boolean configuracion = false;
+
+        log.info("Preparandose para leer Archivo de Objetos");
+        try{
+
+            File file = new File(MAIN.Scraping_Grafico.FICHERO);
+
+            //Comprobar si existe el Archivo
+            if(file.exists()){
+                //Leendo archivo de Objetos
+                ObjectInputStream leerObjeto = new ObjectInputStream(new FileInputStream(MAIN.Scraping_Grafico.FICHERO));
+
+                creden = new UTILES.Credenciales();
+
+                creden = (UTILES.Credenciales)leerObjeto.readObject();
+
+                configuracion = true;
+
+            }else{
+                creden = new UTILES.Credenciales();
+            }
+
+        }
+        catch(IOException | ClassNotFoundException ex){
+            log.error("Error al leer archivo en el fichero");
+        }
+
+        if(!configuracion){
+            log.info("Lanzando ventana de Configuracion");
+            Grafico_Con config = new Grafico_Con(this, true);
+            config.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    public static void cerrarSinGuardar(){
+        log.info("Preparandose para Cerrar");
+        
+        // Cerrar ventana
+        System.exit(0);
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -105,43 +177,6 @@ public class Grafico_Principal extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Grafico_Principal().setVisible(true);
-                
-                log.info("Iniciando Ventana");
-                log.info("Comprobando archivo de configuración");
-                
-                UTILES.Credenciales creden = null;
-                
-                boolean configuracion = false;
-                
-                log.info("Preparandose para leer Archivo de Objetos");
-                try{
-
-                    File file = new File(MAIN.Scraping_Grafico.FICHERO);
-
-                    //Comprobar si existe el Archivo
-                    if(file.exists()){
-                        //Leendo archivo de Objetos
-                        ObjectInputStream leerObjeto = new ObjectInputStream(new FileInputStream(MAIN.Scraping_Grafico.FICHERO));
-
-                        creden = new UTILES.Credenciales();
-
-                        creden = (UTILES.Credenciales)leerObjeto.readObject();
-                        
-                        configuracion = true;
-
-                    }else{
-                        creden = new UTILES.Credenciales();
-                    }
-
-                }
-                catch(IOException | ClassNotFoundException ex){
-                    log.error("Error al leer archivo en el fichero");
-                }
-                
-                if(!configuracion){
-                    log.info("Lanzando ventana de Configuracion");
-                }
-                
             }
         });
     }

@@ -16,7 +16,7 @@ public class Credenciales implements Serializable{
     public String USUARIO;
     public String CONTRASENA;
     
-    public String URL;
+    private String URL;
     
     public String DOMINIO;
     
@@ -24,17 +24,12 @@ public class Credenciales implements Serializable{
     public String IP_ACTUAL;
     
     public String NOMBRE_HOST;
-    public String TIPO_ZONA;
+    private String TIPO_ZONA;
     
     public Credenciales(){
         
         IP_NUEVA = "";
-        IP_ACTUAL = "1.1.1.4";
-        USUARIO = "";
-        CONTRASENA = "";
         URL = "https://panel.dinahosting.com";
-        DOMINIO = "fiandeira.es";
-        NOMBRE_HOST = "prueba";
         TIPO_ZONA = "A";
         
     }
@@ -57,10 +52,6 @@ public class Credenciales implements Serializable{
 
     public String getURL() {
         return URL;
-    }
-
-    public void setURL(String URL) {
-        this.URL = URL;
     }
 
     public String getDOMINIO() {
@@ -99,9 +90,4 @@ public class Credenciales implements Serializable{
         return TIPO_ZONA;
     }
 
-    public void setTIPO_ZONA(String TIPO_ZONA) {
-        this.TIPO_ZONA = TIPO_ZONA;
-    }
-    
-    
 }

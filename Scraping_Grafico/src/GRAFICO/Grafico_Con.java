@@ -12,15 +12,20 @@ import org.apache.log4j.Logger;
  *
  * @author ManuReyesI
  */
-public class Grafico_Configuracion extends javax.swing.JFrame {
-    
-    private static Logger log = Logger.getLogger(Grafico_Configuracion.class);
+public class Grafico_Con extends javax.swing.JDialog {
+
+    private static Logger log = Logger.getLogger(Grafico_Con.class);
     
     /**
-     * Creates new form Grafico_Configuracion
+     * Creates new form Grafico_Con
      */
-    public Grafico_Configuracion() {
+    public Grafico_Con(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        
+        //Nombre Ventana
+        this.setTitle("Configuracion");
+        
     }
 
     /**
@@ -33,41 +38,48 @@ public class Grafico_Configuracion extends javax.swing.JFrame {
     private void initComponents() {
 
         Label_User = new javax.swing.JLabel();
-        Label_Pass = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         texto_usuario = new javax.swing.JTextPane();
+        Label_Pass = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        texto_contrasena = new javax.swing.JTextPane();
         Label_Pass1 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         texto_host = new javax.swing.JTextPane();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        texto_contrasena = new javax.swing.JTextPane();
         btn_cancelar = new javax.swing.JButton();
         btn_aceptar = new javax.swing.JButton();
         errores = new javax.swing.JLabel();
+        Label_Pass2 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        texto_ip = new javax.swing.JTextPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setEnabled(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         Label_User.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/userpequeno.png"))); // NOI18N
-
-        Label_Pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/passpequeno.png"))); // NOI18N
 
         texto_usuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         texto_usuario.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jScrollPane2.setViewportView(texto_usuario);
 
-        Label_Pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/icons8-website-50.png"))); // NOI18N
-
-        texto_host.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        texto_host.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jScrollPane3.setViewportView(texto_host);
+        Label_Pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/passpequeno.png"))); // NOI18N
 
         texto_contrasena.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         texto_contrasena.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jScrollPane4.setViewportView(texto_contrasena);
 
+        Label_Pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ico_dns.png"))); // NOI18N
+
+        texto_host.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        texto_host.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jScrollPane3.setViewportView(texto_host);
+
         btn_cancelar.setText("Cancelar");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelarActionPerformed(evt);
+            }
+        });
 
         btn_aceptar.setText("Aceptar");
         btn_aceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -78,30 +90,40 @@ public class Grafico_Configuracion extends javax.swing.JFrame {
 
         errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
+        Label_Pass2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ico_ip.png"))); // NOI18N
+
+        texto_ip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        texto_ip.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jScrollPane5.setViewportView(texto_ip);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(errores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(errores, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(Label_User)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(Label_Pass)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(Label_Pass1)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(Label_Pass2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -128,7 +150,13 @@ public class Grafico_Configuracion extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Label_Pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12)
                 .addComponent(errores, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -141,16 +169,44 @@ public class Grafico_Configuracion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
-        
+
         log.info("Pulsando btn Aceptar");
-        
-        if(texto_usuario.getText().isEmpty() || texto_contrasena.getText().isEmpty() || texto_host.getText().isEmpty()){
+
+        if(texto_usuario.getText().isEmpty() || texto_contrasena.getText().isEmpty() || texto_host.getText().isEmpty() || texto_ip.getText().isEmpty()){
             log.error("Campos incompletos");
             this.errores.setText("Campos Incompletos");
         }
-        
+        else{
+            this.errores.setText("");
+            log.info("Grabando datos en Clase de Credenciales");
+            
+            Grafico_Principal.creden.setUSUARIO(texto_usuario.getText());
+            Grafico_Principal.creden.setCONTRASENA(texto_contrasena.getText());
+            Grafico_Principal.creden.setDOMINIO("");
+            Grafico_Principal.creden.setNOMBRE_HOST("");
+            Grafico_Principal.creden.setIP_ACTUAL(texto_ip.getText());
+            
+            
+        }
+
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
+    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btn_cancelarActionPerformed
+    
+    @Override
+    public void dispose() {
+        log.info("Preparandose para cerrar Ventana de Configuracion");
+        
+        // Cerrar ventana
+        super.dispose();
+        System.exit(0);
+        
+        //Llamar cierre ventana
+        Grafico_Principal.cerrarSinGuardar();        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -168,20 +224,27 @@ public class Grafico_Configuracion extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Grafico_Configuracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Grafico_Con.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Grafico_Configuracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Grafico_Con.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Grafico_Configuracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Grafico_Con.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Grafico_Configuracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Grafico_Con.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Grafico_Configuracion().setVisible(true);
+                Grafico_Con dialog = new Grafico_Con(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -189,6 +252,7 @@ public class Grafico_Configuracion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Label_Pass;
     private javax.swing.JLabel Label_Pass1;
+    private javax.swing.JLabel Label_Pass2;
     private javax.swing.JLabel Label_User;
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
@@ -196,8 +260,10 @@ public class Grafico_Configuracion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextPane texto_contrasena;
     private javax.swing.JTextPane texto_host;
+    private javax.swing.JTextPane texto_ip;
     private javax.swing.JTextPane texto_usuario;
     // End of variables declaration//GEN-END:variables
 }
