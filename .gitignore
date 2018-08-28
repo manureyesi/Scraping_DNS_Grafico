@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -24,5 +23,6 @@ hs_err_pid*
 /Scraping_Grafico/nbproject/private/
 *.xml
 *.mf
-*.properties
 /Scraping_Grafico/build/
+Scraping_Grafico/nbproject/genfiles.properties
+Scraping_Grafico/nbproject/project.properties

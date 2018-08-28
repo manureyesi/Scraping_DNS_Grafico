@@ -11,7 +11,6 @@ import java.net.UnknownHostException;
 
 
 //Importar Log
-
 import org.apache.log4j.Logger;
 
 //JSoup
