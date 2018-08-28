@@ -14,10 +14,6 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-//Importar Jsoup
-import org.jsoup.Jsoup;
-import org.jsoup.Connection.Method;
-import org.jsoup.Connection.Response;
 
 /**
  *
@@ -33,7 +29,8 @@ public class Scraping_Grafico extends JFrame{
     
     public static GRAFICO.Grafico_Principal principal = new Grafico_Principal();
     
-    public static String FICHERO = "CAMBIO_IP";
+    //Credenciales
+    public static UTILES.Credenciales creden;
     
     public static void main(String[] args) {
         

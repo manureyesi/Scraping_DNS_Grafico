@@ -6,15 +6,26 @@
 package GRAFICO;
 
 
+import java.awt.Image;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.ImageIcon;
 
 
 
 //Importar Log
 import org.apache.log4j.Logger;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 
 /**
  *
@@ -24,8 +35,13 @@ public class Grafico_Principal extends javax.swing.JFrame {
     
     private static Logger log = Logger.getLogger(Grafico_Principal.class);
     
-    //Credenciales
-    public static UTILES.Credenciales creden;
+    //Nombre fichero
+    public static String FICHERO = "CAMBIO_IP";
+    
+    
+    //Hilo
+    public static MiRunnable miRunnable = null;
+    public static Thread hilo = null;
     
     /**
      * Creates new form Grafico_Principal
@@ -73,20 +89,20 @@ public class Grafico_Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 436, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(97, 97, 97)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addGap(60, 60, 60)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addGap(58, 58, 58)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
         pack();
@@ -98,31 +114,35 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         
+        //Icono
+        Image icono = new ImageIcon(getClass().getResource("/IMG/icono.png")).getImage();
+        setIconImage(icono);
+        
+        this.Texto_IP.setEditable(false);
+        
         log.info("Iniciando Ventana");
         log.info("Comprobando archivo de configuración");
-
-        UTILES.Credenciales creden = null;
 
         boolean configuracion = false;
 
         log.info("Preparandose para leer Archivo de Objetos");
         try{
 
-            File file = new File(MAIN.Scraping_Grafico.FICHERO);
+            File file = new File(FICHERO);
 
             //Comprobar si existe el Archivo
             if(file.exists()){
                 //Leendo archivo de Objetos
-                ObjectInputStream leerObjeto = new ObjectInputStream(new FileInputStream(MAIN.Scraping_Grafico.FICHERO));
+                ObjectInputStream leerObjeto = new ObjectInputStream(new FileInputStream(FICHERO));
 
-                creden = new UTILES.Credenciales();
+                MAIN.Scraping_Grafico.creden = new UTILES.Credenciales();
 
-                creden = (UTILES.Credenciales)leerObjeto.readObject();
+                MAIN.Scraping_Grafico.creden = (UTILES.Credenciales)leerObjeto.readObject();
 
                 configuracion = true;
 
             }else{
-                creden = new UTILES.Credenciales();
+                MAIN.Scraping_Grafico.creden = new UTILES.Credenciales();
             }
 
         }
@@ -135,15 +155,191 @@ public class Grafico_Principal extends javax.swing.JFrame {
             Grafico_Con config = new Grafico_Con(this, true);
             config.setVisible(true);
         }
+        else{
+            log.info("Ejecutando Thread");
+            ejecutar();
+        }
         
     }//GEN-LAST:event_formWindowOpened
 
+    public static void credenciales(String usuario, String contrasena, String dominio, String host, String ip){
+        
+        log.info("Introduciendo datos en Credenciales");
+        
+        MAIN.Scraping_Grafico.creden = new UTILES.Credenciales();
+        MAIN.Scraping_Grafico.creden.setUSUARIO(usuario);
+        MAIN.Scraping_Grafico.creden.setCONTRASENA(contrasena);
+        MAIN.Scraping_Grafico.creden.setDOMINIO(dominio);
+        MAIN.Scraping_Grafico.creden.setNOMBRE_HOST(host);
+        MAIN.Scraping_Grafico.creden.setIP_ACTUAL(ip);
+        
+        ejecutar();
+        
+    }
+    
+    public static void ejecutar(){
+        
+        miRunnable = new MiRunnable();
+        hilo = new Thread (miRunnable);
+        hilo.start();
+        
+    }
+    
+    public static class MiRunnable implements Runnable{
+        
+        private boolean shouldStop = false;
+
+        public void stop(){
+            this.shouldStop = true;
+        }
+        
+        public boolean shouldStop(){
+            return this.shouldStop;
+        }
+
+        public void run (){
+            
+            while (!shouldStop()){
+
+                log.info("Comprobar IP");
+
+                String ip = "";
+
+                try{
+
+                    log.info("Recuperando IP");
+
+                    URL whatismyip = new URL("http://checkip.amazonaws.com");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));     
+
+                    ip = in.readLine(); 
+
+                    log.info("IP: "+ip);
+                    
+                    Grafico_Principal.Texto_IP.setText(ip);
+
+                }
+                catch(IOException ex){
+                    log.error("Error al leer archivo con IP");
+                }
+                catch(Exception ex){
+                    log.error("Error al recuperar IP");
+                }
+
+                if(ip.compareTo(MAIN.Scraping_Grafico.creden.IP_ACTUAL) != 0){
+
+                    Connection.Response response = null;
+
+                    MAIN.Scraping_Grafico.creden.IP_NUEVA = ip;
+
+                    try{
+
+                        Map<String, String> cokies = new HashMap<String, String>();
+
+                        log.info("Preparando Inicio de Sesion");
+
+                        cokies = Jsoup.connect(MAIN.Scraping_Grafico.creden.URL+"/login").method(Connection.Method.POST)
+                                .data("id", MAIN.Scraping_Grafico.creden.USUARIO)
+                                .data("password", MAIN.Scraping_Grafico.creden.CONTRASENA)
+                                .data("recordar", "0")
+                                .execute().cookies();
+
+                        log.info("Cokies: "+cokies.toString());
+
+                        try{
+
+                            response = Jsoup.connect(MAIN.Scraping_Grafico.creden.URL+"/dominio/procesar-formulario-zonas-modificar-ajax/_producto/"+MAIN.Scraping_Grafico.creden.DOMINIO).method(Connection.Method.POST)
+                                .data("tipo_zona", MAIN.Scraping_Grafico.creden.TIPO_ZONA)
+                                .data("host_ipv4", MAIN.Scraping_Grafico.creden.NOMBRE_HOST)
+                                .data("ipv4", MAIN.Scraping_Grafico.creden.IP_NUEVA)
+                                .data("destino_original", MAIN.Scraping_Grafico.creden.IP_ACTUAL)
+                                .cookies(cokies)
+                                .execute();
+
+                        }
+                        catch(Exception ex){}
+
+                        log.info("IP actual: "+ MAIN.Scraping_Grafico.creden.IP_ACTUAL);
+
+                        log.info("IP " + MAIN.Scraping_Grafico.creden.IP_NUEVA + " actualiza con exito para el Host " + MAIN.Scraping_Grafico.creden.NOMBRE_HOST);
+
+                        MAIN.Scraping_Grafico.creden.IP_ACTUAL = MAIN.Scraping_Grafico.creden.IP_NUEVA;
+
+                        log.info("IP actual: "+ MAIN.Scraping_Grafico.creden.IP_ACTUAL);
+                        
+                        Grafico_Principal.Texto_IP.setText(MAIN.Scraping_Grafico.creden.IP_ACTUAL);
+                        
+                    }
+                    catch(Exception ex){
+                        log.error("Error al modificar la IP");
+                    }
+
+                }
+                
+                //Guardar fichero configuracion
+                try{
+
+                    //Guardando en Fichero
+                    log.info("Preparando para guarda objeto en Archivo");
+                    ObjectOutputStream guardarFichero = new ObjectOutputStream(new FileOutputStream(FICHERO));
+                    guardarFichero.writeObject(MAIN.Scraping_Grafico.creden);
+                    guardarFichero.close();
+
+                    log.info("Objeto guardado con exito en el archivo " +FICHERO);
+
+                }
+                catch(IOException ex){
+                    log.error("Error al guardar Objeto en el fichero");
+                }
+                
+                log.info("Parando ejecucion de hilo por 5 minutos");
+                
+                try {
+                    Thread.sleep (300000);
+                } catch (InterruptedException ex) {
+                    log.error("Error al parar Hilo");
+                }
+            }
+        }
+    }
+    
     public static void cerrarSinGuardar(){
         log.info("Preparandose para Cerrar");
         
         // Cerrar ventana
         System.exit(0);
         
+    }
+    
+    @Override
+    public void dispose() {
+        
+        log.info("Preparandose para cerrar Ventana Principal");
+        
+        //Guardar fichero configuracion
+        try{
+
+            //Guardando en Fichero
+            log.info("Preparando para guarda objeto en Archivo");
+            ObjectOutputStream guardarFichero = new ObjectOutputStream(new FileOutputStream(FICHERO));
+            guardarFichero.writeObject(MAIN.Scraping_Grafico.creden);
+            guardarFichero.close();
+
+            log.info("Objeto guardado con exito en el archivo " +FICHERO);
+
+        }
+        catch(IOException ex){
+            log.error("Error al guardar Objeto en el fichero");
+        }
+        
+        //Parar hilo
+        miRunnable.stop();
+         
+        // Cerrar ventana
+        super.dispose();
+        System.exit(0);
+              
     }
     
     /**
@@ -182,7 +378,7 @@ public class Grafico_Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane Texto_IP;
+    public static javax.swing.JTextPane Texto_IP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

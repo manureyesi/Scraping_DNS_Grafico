@@ -16,7 +16,7 @@ public class Credenciales implements Serializable{
     public String USUARIO;
     public String CONTRASENA;
     
-    private String URL;
+    public String URL;
     
     public String DOMINIO;
     
@@ -24,13 +24,14 @@ public class Credenciales implements Serializable{
     public String IP_ACTUAL;
     
     public String NOMBRE_HOST;
-    private String TIPO_ZONA;
+    public String TIPO_ZONA;
     
     public Credenciales(){
         
         IP_NUEVA = "";
         URL = "https://panel.dinahosting.com";
         TIPO_ZONA = "A";
+        
         
     }
 

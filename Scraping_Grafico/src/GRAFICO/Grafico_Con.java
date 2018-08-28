@@ -5,8 +5,17 @@
  */
 package GRAFICO;
 
+import java.io.IOException;
+
+
 //Importar Log
+
 import org.apache.log4j.Logger;
+
+//JSoup
+import org.jsoup.Jsoup;
+import org.jsoup.Connection;
+import org.jsoup.Connection.Response;
 
 /**
  *
@@ -180,13 +189,60 @@ public class Grafico_Con extends javax.swing.JDialog {
             this.errores.setText("");
             log.info("Grabando datos en Clase de Credenciales");
             
-            Grafico_Principal.creden.setUSUARIO(texto_usuario.getText());
-            Grafico_Principal.creden.setCONTRASENA(texto_contrasena.getText());
-            Grafico_Principal.creden.setDOMINIO("");
-            Grafico_Principal.creden.setNOMBRE_HOST("");
-            Grafico_Principal.creden.setIP_ACTUAL(texto_ip.getText());
+            String[] auxHost = this.texto_host.getText().split("\\.");
+            String[] auxIP = this.texto_ip.getText().split("\\.");
             
-            
+            if(auxHost.length != 3){
+                log.error("Error el nombre de Host");
+                this.errores.setText("Error en el nombre de Host");
+            }
+            else if(auxIP.length != 4){
+                log.error("Error al introducir la IP");
+                this.errores.setText("Error en la IP");
+            }
+            else{
+
+                String dominio = auxHost[1]+"."+auxHost[2];
+                String host = auxHost[0];
+                
+                boolean error = false;
+                
+                //Probar conexion
+                try{
+                    log.info("Preparando Inicio de Sesion");
+                    
+                    UTILES.Credenciales credenciales = new UTILES.Credenciales();
+                    
+                    Response response = Jsoup.connect(credenciales.URL+"/login").method(Connection.Method.POST)
+                            .data("id", this.texto_usuario.getText())
+                            .data("password", this.texto_contrasena.getText())
+                            .data("recordar", "0")
+                            .execute();
+                    
+                    //log.info(response.body().toString());
+                    
+                    String cadenaError = "validation-error";
+                    
+                    if(cadenaError.indexOf(response.body()) != -1){
+                        error = true;
+                        log.error("Error al iniciar sesion, datos incorrectos");
+                    }
+                    
+                }
+                catch(IOException ex){
+                    error = true;
+                    log.error("Error al iniciar Sesion");
+                }
+                
+                if(error){
+                    this.errores.setText("Error al iniciar sesion");
+                }
+                else{
+                    log.info("Introduciendo datos en Credenciales");
+                    Grafico_Principal.credenciales(this.texto_usuario.getText(), this.texto_contrasena.getText(), dominio, host, this.texto_ip.getText());
+                    this.setVisible(false);
+                }
+            }
         }
 
     }//GEN-LAST:event_btn_aceptarActionPerformed
