@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
 
-
-
 //Importar Log
 import org.apache.log4j.Logger;
+
+//Jsoup
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
@@ -66,6 +66,7 @@ public class Grafico_Principal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Texto_IP = new javax.swing.JTextPane();
         jLabel1 = new javax.swing.JLabel();
+        btn_cancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -83,26 +84,43 @@ public class Grafico_Principal extends javax.swing.JFrame {
         Texto_IP.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jScrollPane1.setViewportView(Texto_IP);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/logo_dinahosting.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/dinahosting.png"))); // NOI18N
+
+        btn_cancelar.setBackground(new java.awt.Color(204, 204, 204));
+        btn_cancelar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btn_cancelar.setText("Cancelar");
+        btn_cancelar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 436, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btn_cancelar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -162,6 +180,10 @@ public class Grafico_Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_formWindowOpened
 
+    private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
+        dispose();
+    }//GEN-LAST:event_btn_cancelarActionPerformed
+
     public static void credenciales(String usuario, String contrasena, String dominio, String host, String ip){
         
         log.info("Introduciendo datos en Credenciales");
@@ -217,7 +239,7 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
                     log.info("IP: "+ip);
                     
-                    Grafico_Principal.Texto_IP.setText(ip);
+                    Grafico_Principal.Texto_IP.setText("     "+ip);
 
                 }
                 catch(IOException ex){
@@ -268,7 +290,7 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
                         log.info("IP actual: "+ MAIN.Scraping_Grafico.creden.IP_ACTUAL);
                         
-                        Grafico_Principal.Texto_IP.setText(MAIN.Scraping_Grafico.creden.IP_ACTUAL);
+                        Grafico_Principal.Texto_IP.setText("     "+MAIN.Scraping_Grafico.creden.IP_ACTUAL);
                         
                     }
                     catch(Exception ex){
@@ -379,6 +401,7 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JTextPane Texto_IP;
+    private javax.swing.JButton btn_cancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

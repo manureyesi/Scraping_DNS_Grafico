@@ -5,6 +5,8 @@
  */
 package GRAFICO;
 
+import static java.awt.event.ActionEvent.ACTION_FIRST;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -62,36 +64,70 @@ public class Grafico_Con extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         Label_User.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/userpequeno.png"))); // NOI18N
 
         texto_usuario.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         texto_usuario.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        texto_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                texto_usuarioKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                texto_usuarioKeyTyped(evt);
+            }
+        });
         jScrollPane2.setViewportView(texto_usuario);
 
         Label_Pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/passpequeno.png"))); // NOI18N
 
         texto_contrasena.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         texto_contrasena.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        texto_contrasena.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                texto_contrasenaKeyReleased(evt);
+            }
+        });
         jScrollPane4.setViewportView(texto_contrasena);
 
         Label_Pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ico_dns.png"))); // NOI18N
 
         texto_host.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         texto_host.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        texto_host.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                texto_hostKeyReleased(evt);
+            }
+        });
         jScrollPane3.setViewportView(texto_host);
 
+        btn_cancelar.setBackground(new java.awt.Color(204, 204, 204));
+        btn_cancelar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_cancelar.setText("Cancelar");
+        btn_cancelar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelarActionPerformed(evt);
             }
         });
 
+        btn_aceptar.setBackground(new java.awt.Color(204, 204, 204));
+        btn_aceptar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btn_aceptar.setText("Aceptar");
+        btn_aceptar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn_aceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_aceptarActionPerformed(evt);
+            }
+        });
+        btn_aceptar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                btn_aceptarKeyReleased(evt);
             }
         });
 
@@ -163,6 +199,12 @@ public class Grafico_Con extends javax.swing.JDialog {
 
         log.info("Pulsando btn Aceptar");
 
+        btn_aceptar_evt();
+
+    }//GEN-LAST:event_btn_aceptarActionPerformed
+
+    private void btn_aceptar_evt(){
+        
         if(texto_usuario.getText().isEmpty() || texto_contrasena.getText().isEmpty() || texto_host.getText().isEmpty()){
             log.error("Campos incompletos");
             this.errores.setText("Campos Incompletos");
@@ -222,12 +264,13 @@ public class Grafico_Con extends javax.swing.JDialog {
                             .data("password", this.texto_contrasena.getText())
                             .data("recordar", "0")
                             .execute();
+                                        
+                    String cadenaError = "<span class=\"validation-error\">Credenciales no válidas</span>";
+                    String cadenaError2 = "<span class=\"validation-error\">Usuario bloqueado, inténtalo más tarde.</span>";
                     
-                    //log.info(response.body().toString());
+                    log.error(response.body());
                     
-                    String cadenaError = "validation-error";
-                    
-                    if(cadenaError.indexOf(response.body()) != -1){
+                    if((cadenaError.indexOf(response.body()) > -1) || (cadenaError2.indexOf(response.body()) > -1)){
                         error = true;
                         log.error("Error al iniciar sesion, datos incorrectos");
                     }
@@ -248,12 +291,81 @@ public class Grafico_Con extends javax.swing.JDialog {
                 }
             }
         }
-
-    }//GEN-LAST:event_btn_aceptarActionPerformed
-
+        
+    }
+    
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         dispose();
     }//GEN-LAST:event_btn_cancelarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        log.info("POner cursor en Usuario");
+        this.texto_usuario.requestFocus();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void texto_usuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texto_usuarioKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_texto_usuarioKeyTyped
+
+    private void texto_usuarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texto_usuarioKeyReleased
+        
+        log.info("Presionando tecla en Texto Usuario");
+        this.texto_usuario.setText(this.texto_usuario.getText().toLowerCase());
+        
+        if (evt.getKeyCode() == KeyEvent.VK_TAB) {
+            log.info("Presionando TAB en campo de Texto_IP");
+            this.texto_contrasena.requestFocus();
+            this.texto_usuario.setText(this.texto_usuario.getText().trim());
+        }
+        else if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            log.info("Presionando ENTER en campo de Texto_IP");
+            this.texto_contrasena.requestFocus();
+            this.texto_usuario.setText(this.texto_usuario.getText().trim());
+        }
+        
+    }//GEN-LAST:event_texto_usuarioKeyReleased
+
+    private void texto_contrasenaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texto_contrasenaKeyReleased
+        
+        log.info("Presionando tecla en Texto Contraseña");
+        
+        if (evt.getKeyCode() == KeyEvent.VK_TAB) {
+            log.info("Presionando TAB en campo de Texto_Contrasena");
+            this.texto_host.requestFocus();
+            this.texto_contrasena.setText(this.texto_contrasena.getText().trim());
+        }
+        else if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            log.info("Presionando ENTER en campo de Texto_Contrasena");
+            this.texto_host.requestFocus();
+            this.texto_contrasena.setText(this.texto_contrasena.getText().trim());
+        }
+        
+    }//GEN-LAST:event_texto_contrasenaKeyReleased
+
+    private void texto_hostKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texto_hostKeyReleased
+       
+        log.info("Presionando tecla en Texto Host");
+        this.texto_host.setText(this.texto_host.getText().toLowerCase());
+        
+        if (evt.getKeyCode() == KeyEvent.VK_TAB) {
+            log.info("Presionando TAB en campo de Texto_Host");
+            this.btn_aceptar.requestFocus();
+            this.texto_host.setText(this.texto_host.getText().trim());
+        }
+        else if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            log.info("Presionando ENTER en campo de Texto_Host");
+            this.btn_aceptar.requestFocus();
+            this.texto_host.setText(this.texto_host.getText().trim());
+        }
+        
+    }//GEN-LAST:event_texto_hostKeyReleased
+
+    private void btn_aceptarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_aceptarKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            log.info("Presionando ENTER en boton de btn_aceptar");
+            btn_aceptar_evt();
+        }
+    }//GEN-LAST:event_btn_aceptarKeyReleased
     
     @Override
     public void dispose() {
