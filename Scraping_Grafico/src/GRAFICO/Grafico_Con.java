@@ -6,6 +6,8 @@
 package GRAFICO;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 
 //Importar Log
@@ -58,9 +60,6 @@ public class Grafico_Con extends javax.swing.JDialog {
         btn_cancelar = new javax.swing.JButton();
         btn_aceptar = new javax.swing.JButton();
         errores = new javax.swing.JLabel();
-        Label_Pass2 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        texto_ip = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -99,12 +98,6 @@ public class Grafico_Con extends javax.swing.JDialog {
 
         errores.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
-        Label_Pass2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ico_ip.png"))); // NOI18N
-
-        texto_ip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        texto_ip.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jScrollPane5.setViewportView(texto_ip);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,11 +121,7 @@ public class Grafico_Con extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(Label_Pass2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane5)))
+                        .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -160,12 +149,6 @@ public class Grafico_Con extends javax.swing.JDialog {
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Label_Pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(12, 12, 12)
                 .addComponent(errores, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -181,7 +164,7 @@ public class Grafico_Con extends javax.swing.JDialog {
 
         log.info("Pulsando btn Aceptar");
 
-        if(texto_usuario.getText().isEmpty() || texto_contrasena.getText().isEmpty() || texto_host.getText().isEmpty() || texto_ip.getText().isEmpty()){
+        if(texto_usuario.getText().isEmpty() || texto_contrasena.getText().isEmpty() || texto_host.getText().isEmpty()){
             log.error("Campos incompletos");
             this.errores.setText("Campos Incompletos");
         }
@@ -190,22 +173,44 @@ public class Grafico_Con extends javax.swing.JDialog {
             log.info("Grabando datos en Clase de Credenciales");
             
             String[] auxHost = this.texto_host.getText().split("\\.");
-            String[] auxIP = this.texto_ip.getText().split("\\.");
+            
+            //Comprobar IP host
+            boolean errorBuscarHost = false;
+            try{
+                log.info("Preparandose para buscar IP de host " + this.texto_host.getText());
+                InetAddress dirIp = InetAddress.getByName(this.texto_host.getText());
+            }
+            catch(UnknownHostException ex){
+                log.error("Error al buscar IP de Host "+ this.texto_host.getText());
+                errorBuscarHost = true;
+            }
             
             if(auxHost.length != 3){
                 log.error("Error el nombre de Host");
                 this.errores.setText("Error en el nombre de Host");
             }
-            else if(auxIP.length != 4){
-                log.error("Error al introducir la IP");
-                this.errores.setText("Error en la IP");
+            else if(errorBuscarHost){
+                log.error("El host "+this.texto_host.getText()+" no existe");
+                this.errores.setText("El host no existe");
             }
             else{
 
                 String dominio = auxHost[1]+"."+auxHost[2];
                 String host = auxHost[0];
+                String ip = "";
                 
                 boolean error = false;
+                
+                //Buscar IP
+                try{
+                    log.info("Preparandose para buscar IP de host " + this.texto_host.getText());
+                    InetAddress dirIp = InetAddress.getByName(this.texto_host.getText());
+                    ip = dirIp.getHostAddress().toString();
+                }
+                catch(UnknownHostException ex){
+                    log.error("Error al buscar IP de Host "+ this.texto_host.getText());
+                    error = true;
+                }
                 
                 //Probar conexion
                 try{
@@ -239,7 +244,7 @@ public class Grafico_Con extends javax.swing.JDialog {
                 }
                 else{
                     log.info("Introduciendo datos en Credenciales");
-                    Grafico_Principal.credenciales(this.texto_usuario.getText(), this.texto_contrasena.getText(), dominio, host, this.texto_ip.getText());
+                    Grafico_Principal.credenciales(this.texto_usuario.getText(), this.texto_contrasena.getText(), dominio, host, ip);
                     this.setVisible(false);
                 }
             }
@@ -308,7 +313,6 @@ public class Grafico_Con extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Label_Pass;
     private javax.swing.JLabel Label_Pass1;
-    private javax.swing.JLabel Label_Pass2;
     private javax.swing.JLabel Label_User;
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
@@ -316,10 +320,8 @@ public class Grafico_Con extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTextPane texto_contrasena;
     private javax.swing.JTextPane texto_host;
-    private javax.swing.JTextPane texto_ip;
     private javax.swing.JTextPane texto_usuario;
     // End of variables declaration//GEN-END:variables
 }
