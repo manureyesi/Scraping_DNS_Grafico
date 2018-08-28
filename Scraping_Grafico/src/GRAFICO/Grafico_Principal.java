@@ -132,6 +132,8 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE );
+        
         //Icono
         Image icono = new ImageIcon(getClass().getResource("/IMG/icono.png")).getImage();
         setIconImage(icono);
@@ -239,8 +241,9 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
                     log.info("IP: "+ip);
                     
-                    Grafico_Principal.Texto_IP.setText("     "+ip);
-
+                    Grafico_Principal.Texto_IP.setText(ip);
+                    
+                    
                 }
                 catch(IOException ex){
                     log.error("Error al leer archivo con IP");
@@ -290,7 +293,7 @@ public class Grafico_Principal extends javax.swing.JFrame {
 
                         log.info("IP actual: "+ MAIN.Scraping_Grafico.creden.IP_ACTUAL);
                         
-                        Grafico_Principal.Texto_IP.setText("     "+MAIN.Scraping_Grafico.creden.IP_ACTUAL);
+                        Grafico_Principal.Texto_IP.setText(MAIN.Scraping_Grafico.creden.IP_ACTUAL);
                         
                     }
                     catch(Exception ex){

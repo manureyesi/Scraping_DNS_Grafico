@@ -5,7 +5,6 @@
  */
 package GRAFICO;
 
-import static java.awt.event.ActionEvent.ACTION_FIRST;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -313,12 +312,12 @@ public class Grafico_Con extends javax.swing.JDialog {
         this.texto_usuario.setText(this.texto_usuario.getText().toLowerCase());
         
         if (evt.getKeyCode() == KeyEvent.VK_TAB) {
-            log.info("Presionando TAB en campo de Texto_IP");
+            log.info("Presionando TAB en campo de Texto_Usuario");
             this.texto_contrasena.requestFocus();
             this.texto_usuario.setText(this.texto_usuario.getText().trim());
         }
         else if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            log.info("Presionando ENTER en campo de Texto_IP");
+            log.info("Presionando ENTER en campo de Texto_Usuario");
             this.texto_contrasena.requestFocus();
             this.texto_usuario.setText(this.texto_usuario.getText().trim());
         }
