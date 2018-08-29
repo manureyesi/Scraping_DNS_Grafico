@@ -54,7 +54,7 @@ public class Grafico_Con extends javax.swing.JDialog {
         Label_Pass = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         texto_contrasena = new javax.swing.JTextPane();
-        Label_Pass1 = new javax.swing.JLabel();
+        Label_Host = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         texto_host = new javax.swing.JTextPane();
         btn_cancelar = new javax.swing.JButton();
@@ -94,7 +94,7 @@ public class Grafico_Con extends javax.swing.JDialog {
         });
         jScrollPane4.setViewportView(texto_contrasena);
 
-        Label_Pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ico_dns.png"))); // NOI18N
+        Label_Host.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ico_dns.png"))); // NOI18N
 
         texto_host.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         texto_host.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -149,7 +149,7 @@ public class Grafico_Con extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Label_Pass1)
+                        .addComponent(Label_Host)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3))
                     .addGroup(layout.createSequentialGroup()
@@ -178,7 +178,7 @@ public class Grafico_Con extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Label_Pass1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Label_Host, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -421,8 +421,8 @@ public class Grafico_Con extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Label_Host;
     private javax.swing.JLabel Label_Pass;
-    private javax.swing.JLabel Label_Pass1;
     private javax.swing.JLabel Label_User;
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
