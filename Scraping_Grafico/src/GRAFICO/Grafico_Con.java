@@ -26,7 +26,7 @@ import org.jsoup.Connection.Response;
 public class Grafico_Con extends javax.swing.JDialog {
 
     private static Logger log = Logger.getLogger(Grafico_Con.class);
-    
+        
     /**
      * Creates new form Grafico_Con
      */
@@ -53,7 +53,7 @@ public class Grafico_Con extends javax.swing.JDialog {
         texto_usuario = new javax.swing.JTextPane();
         Label_Pass = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        texto_contrasena = new javax.swing.JTextPane();
+        texto_contrasena = new javax.swing.JPasswordField();
         Label_Host = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         texto_host = new javax.swing.JTextPane();
@@ -327,7 +327,6 @@ public class Grafico_Con extends javax.swing.JDialog {
     private void texto_contrasenaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_texto_contrasenaKeyReleased
         
         log.info("Presionando tecla en Texto Contraseña");
-        
         if (evt.getKeyCode() == KeyEvent.VK_TAB) {
             log.info("Presionando TAB en campo de Texto_Contrasena");
             this.texto_host.requestFocus();
@@ -430,7 +429,7 @@ public class Grafico_Con extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextPane texto_contrasena;
+    private javax.swing.JPasswordField texto_contrasena;
     private javax.swing.JTextPane texto_host;
     private javax.swing.JTextPane texto_usuario;
     // End of variables declaration//GEN-END:variables
